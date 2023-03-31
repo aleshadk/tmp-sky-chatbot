@@ -4,12 +4,16 @@ import { PineconeStore } from 'langchain/vectorstores';
 import { makeChain } from '@/utils/makechain';
 import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
+import { USER_CONTEXT_PROMT } from './context';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { question, history } = req.body;
+  let { question, history } = req.body;
+
+  question = `${USER_CONTEXT_PROMT} Зная это, ответь на вопрос: Я занимаюсь в Skyeng и хочу тебя спросить ${question}`
+  console.log(question);
 
   if (!question) {
     return res.status(400).json({ message: 'No question in the request' });
