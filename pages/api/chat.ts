@@ -5,21 +5,31 @@ import { makeChain } from '@/utils/makechain';
 import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 import { USER_CONTEXT_PROMT } from './context';
+import { tryMapButtonToPrompt } from './button-handler';
+
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  let { question, history } = req.body;
+  let raw_question = req.body.question;
+  let history = req.body.history;
 
-  question = `${USER_CONTEXT_PROMT} Зная это, ответь на вопрос: Я занимаюсь в Skyeng и хочу тебя спросить ${question}`
-  console.log(question);
+
+  let question = tryMapButtonToPrompt(raw_question);
+
+  const commandWasHandled = question !== raw_question;
+
+  if (!commandWasHandled) {
+    question = `${USER_CONTEXT_PROMT} Зная это, ответь на вопрос: Я занимаюсь в Skyeng и хочу тебя спросить ${question}`
+  }
 
   if (!question) {
     return res.status(400).json({ message: 'No question in the request' });
   }
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
+
 
   const index = pinecone.Index(PINECONE_INDEX_NAME);
 

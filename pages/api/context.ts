@@ -38,16 +38,16 @@ const SCHEDULE_CONTEXT: IScheduleContext[] = [
 function scheduleContextToPrompt(context: IScheduleContext[]): string {
   return context.map(x => {
     const lessons = x.lessons.map(y => y.datetime).join(',');
-    return `У меня есть занятия по ${x.subject} у преподавателя ${x.teacher} ${lessons}`;
-  }).join(', ');
+    return `У меня есть следующие расписание занятий по ${x.subject} у преподавателя ${x.teacher} ${lessons}`;
+  }).join('. Так же,  ');
 }
 
 function abandonedLessonsInThisMonthContextToPrompt(): string {
-  return 'В этом месяце я уже отменял один урок';
+  return 'В этом месяце я уже отменял 1 урок. ';
 }
 
 function timeContextToPrompt(): string {
-  return 'Сейчас 30 марта 16:00';
+  return 'Сейчас 30 марта, время 16:00';
 }
 
 function getUserContextPromt() {

@@ -3,7 +3,7 @@ import { LLMChain, ChatVectorDBQAChain, loadQAChain } from 'langchain/chains';
 import { PineconeStore } from 'langchain/vectorstores';
 import { PromptTemplate } from 'langchain/prompts';
 import { CallbackManager } from 'langchain/callbacks';
-import { QA_PROMPT } from './promt_context';
+import { promptContext } from './promt_context';
 
 const _CONDENSE_PROMPT =
   PromptTemplate.fromTemplate(`Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
@@ -25,13 +25,15 @@ export const makeChain = (
   vectorstore: PineconeStore,
   onTokenStream?: (token: string) => void,
 ) => {
+  console.log(promptContext.prompt);
+
   const questionGenerator = new LLMChain({
     llm: new OpenAIChat({ temperature: 0 }), // wtf??? utils/openai-client.ts
     prompt: CONDENSE_PROMPT,
   });
   const docChain = loadQAChain(
     new OpenAIChat({
-      temperature: 0,
+      temperature: 0.5,
       modelName: 'gpt-4', //change this to older versions (e.g. gpt-3.5-turbo) if you don't have access to gpt-4
       streaming: Boolean(onTokenStream),
       callbackManager: onTokenStream
@@ -43,7 +45,7 @@ export const makeChain = (
           })
         : undefined,
     }),
-    { prompt: QA_PROMPT },
+    { prompt: promptContext.prompt },
   );
 
   return new ChatVectorDBQAChain({

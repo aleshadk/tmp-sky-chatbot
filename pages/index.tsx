@@ -27,7 +27,7 @@ export default function Home() {
   }>({
     messages: [
       {
-        message: 'Hi, what would you like to learn about this legal case?',
+        message: 'Лэт зэ мэджик бегинс! ',
         type: 'apiMessage',
       },
     ],
@@ -69,6 +69,11 @@ export default function Home() {
       pending: undefined,
     }));
 
+    sendRequest(question);
+  }
+
+
+  async function sendRequest(question: string) {
     setLoading(true);
     setQuery('');
     setMessageState((state) => ({ ...state, pending: '' }));
@@ -160,12 +165,16 @@ export default function Home() {
     }
   }, [chatMessages]);
 
+  function createTest(text: string): void {
+    sendRequest(text);
+  }
+
   return (
     <>
       <Layout>
         <div className="mx-auto flex flex-col gap-4">
           <h1 className="text-2xl font-bold leading-[1.1] tracking-tighter text-center">
-            Chat With Your Legal Docs
+            Хихитон 😂
           </h1>
           <main className={styles.main}>
             <div className={styles.cloud}>
@@ -267,6 +276,13 @@ export default function Home() {
                 )}
               </div>
             </div>
+
+            <div className="sky-suggest-wrap">
+                <button className="sky-suggest-button" onClick={() => createTest("CREATE_TEST")}>Придумай мне тест</button>
+                <button className="sky-suggest-button" onClick={() => createTest("EMOTIONAL_CONTEXT_FRIEND")}>Я друг</button>
+                <button className="sky-suggest-button" onClick={() => createTest("EMOTIONAL_CONTEXT_ROBLOX")}>Я очень странный друг</button>
+            </div>
+
             <div className={styles.center}>
               <div className={styles.cloudform}>
                 <form onSubmit={handleSubmit}>
@@ -282,7 +298,7 @@ export default function Home() {
                     placeholder={
                       loading
                         ? 'Waiting for response...'
-                        : 'What is this legal case about?'
+                        : 'Штош...'
                     }
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -318,11 +334,6 @@ export default function Home() {
             )}
           </main>
         </div>
-        <footer className="m-auto p-4">
-          <a href="https://twitter.com/mayowaoshin">
-            Powered by LangChainAI. Demo built by Mayo (Twitter: @mayowaoshin).
-          </a>
-        </footer>
       </Layout>
     </>
   );

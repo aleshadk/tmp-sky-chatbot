@@ -13,6 +13,10 @@ const SKYENG = (`
   Отвечай кратко, лаконично и в дружеской манере, как будто вы давно дружите. Говори на "ты" и иногда отправляй весёлые эмоджки в конце сообщения.
 `)
 
+const SHORT = (`
+  Отвечай кратко, лаконично и в дружеской манере, как будто вы давно дружите. Говори на "ты" и иногда отправляй весёлые эмоджки в конце сообщения. Отвечай на русском языке, но переводи некоторые слова из твоего ответа на английский во всех контекстах 
+`)
+
 function getPromptTemplate(prompt: string): PromptTemplate {
   const template = (`
     ${prompt}
@@ -27,4 +31,32 @@ function getPromptTemplate(prompt: string): PromptTemplate {
   return PromptTemplate.fromTemplate(template);
 }
 
-export const QA_PROMPT = getPromptTemplate(SKYENG);
+export enum EmotionalContext {
+  Friend,
+  Roblox
+}
+
+class PromptContext {
+  public get prompt(): PromptTemplate {
+    const context = [this.getEmotionalContext()].join('\n')
+    console.log(context);
+    return getPromptTemplate(context);
+  };
+
+  private emotionalContext: EmotionalContext = EmotionalContext.Friend
+
+  private getEmotionalContext(): string {
+    switch (this.emotionalContext) {
+      case EmotionalContext.Friend:
+        return 'Отвечай кратко, лаконично и в дружеской манере, как будто вы давно дружите. Говори на "ты" и иногда отправляй весёлые эмоджки в конце сообщения. Отвечай на русском языке, но переводи некоторые слова из твоего ответа на английский во всех контекстах';
+      case EmotionalContext.Roblox:
+        return 'Отвечай на вопрос, но в конце добавь какую-нибудь цитату песни Король и Шут';
+    }
+  }
+  
+  public setUpEmotionalContext(context: EmotionalContext): void {
+    this.emotionalContext = context
+  }
+}
+
+export const promptContext = new PromptContext();
