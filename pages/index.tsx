@@ -278,9 +278,12 @@ export default function Home() {
             </div>
 
             <div className="sky-suggest-wrap">
+                <button className="sky-suggest-button hidden" onClick={() => createTest("SWITCH_TRANSLATION_CONTEXT")}>Может in English?</button>
                 <button className="sky-suggest-button" onClick={() => createTest("CREATE_TEST")}>Придумай мне тест</button>
-                <button className="sky-suggest-button" onClick={() => createTest("EMOTIONAL_CONTEXT_FRIEND")}>Я друг</button>
-                <button className="sky-suggest-button" onClick={() => createTest("EMOTIONAL_CONTEXT_ROBLOX")}>Я очень странный друг</button>
+                <button className="sky-suggest-button" onClick={() => createTest("SWITCH_SKYENG_CONTEXT")}>SWITCH_SKYENG_CONTEXT</button>
+                <button className="sky-suggest-button hidden" onClick={() => createTest("EMOTIONAL_CONTEXT_FRIEND")}>Я друг</button>
+                <button className="sky-suggest-button" onClick={() => createTest("EMOTIONAL_CONTEXT_ROBLOX")}>Режим бабули</button>
+                <button className="sky-suggest-button hidden" onClick={() => createTest("MARKDOWN_TEST")}>Тест маркдауна</button>
             </div>
 
             <div className={styles.center}>

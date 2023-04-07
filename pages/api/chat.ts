@@ -6,6 +6,7 @@ import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
 import { USER_CONTEXT_PROMT } from './context';
 import { tryMapButtonToPrompt } from './button-handler';
+import { promptContext } from '@/utils/promt_context';
 
 
 export default async function handler(
@@ -15,13 +16,12 @@ export default async function handler(
   let raw_question = req.body.question;
   let history = req.body.history;
 
-
   let question = tryMapButtonToPrompt(raw_question);
 
   const commandWasHandled = question !== raw_question;
 
   if (!commandWasHandled) {
-    question = `${USER_CONTEXT_PROMT} Зная это, ответь на вопрос: Я занимаюсь в Skyeng и хочу тебя спросить ${question}`
+    question = `${promptContext.includeSkyengContext ? USER_CONTEXT_PROMT + ' Эта информация может быть полезна тебе при ответе на сообщение: ' : ''} ${question}`
   }
 
   if (!question) {

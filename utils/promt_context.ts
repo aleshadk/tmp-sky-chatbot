@@ -14,7 +14,7 @@ const SKYENG = (`
 `)
 
 const SHORT = (`
-  Отвечай кратко, лаконично и в дружеской манере, как будто вы давно дружите. Говори на "ты" и иногда отправляй весёлые эмоджки в конце сообщения. Отвечай на русском языке, но переводи некоторые слова из твоего ответа на английский во всех контекстах 
+  Отвечай кратко, лаконично и в дружеской манере, как будто вы давно дружите. Говори на "ты" и иногда отправляй весёлые эмоджки в конце сообщения. 
 `)
 
 function getPromptTemplate(prompt: string): PromptTemplate {
@@ -38,20 +38,31 @@ export enum EmotionalContext {
 
 class PromptContext {
   public get prompt(): PromptTemplate {
-    const context = [this.getEmotionalContext()].join('\n')
+    const context = [this.getEmotionalContext(), this.getTranslationContext()].join('\n')
     console.log(context);
     return getPromptTemplate(context);
   };
+
+  public includeSkyengContext = false;
+  public enableRandomWordTranslation = false;
 
   private emotionalContext: EmotionalContext = EmotionalContext.Friend
 
   private getEmotionalContext(): string {
     switch (this.emotionalContext) {
       case EmotionalContext.Friend:
-        return 'Отвечай кратко, лаконично и в дружеской манере, как будто вы давно дружите. Говори на "ты" и иногда отправляй весёлые эмоджки в конце сообщения. Отвечай на русском языке, но переводи некоторые слова из твоего ответа на английский во всех контекстах';
+        return 'Отвечай кратко, лаконично и в дружеской манере, как будто вы давно дружите. Говори на "ты" и иногда отправляй весёлые эмоджки в конце сообщения';
       case EmotionalContext.Roblox:
-        return 'Отвечай на вопрос, но в конце добавь какую-нибудь цитату песни Король и Шут';
+        return 'Отвечай на вопрос как будто ты моя заботливая бабушка, желай мне удачи, интересуйся моим здоровьем или питанием. В конце напомни, что всегда нужно одевать шапку';
     }
+  }
+
+  private getTranslationContext(): string {
+    if (this.enableRandomWordTranslation) {
+      return 'Отвечай на русском языке, но переводи некоторые слова из твоего ответа на английский во всех контекстах'
+    }
+    
+    return '';
   }
   
   public setUpEmotionalContext(context: EmotionalContext): void {

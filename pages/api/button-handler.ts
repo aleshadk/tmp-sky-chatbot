@@ -12,6 +12,14 @@ export function tryMapButtonToPrompt(value: string): string {
     case 'EMOTIONAL_CONTEXT_ROBLOX':
         promptContext.setUpEmotionalContext(EmotionalContext.Roblox)
         return EMOTIONAL_CONTEXT_CHANGE_ANSWER;
+    case 'SWITCH_SKYENG_CONTEXT':
+        promptContext.includeSkyengContext = !promptContext.includeSkyengContext;
+        return EMOTIONAL_CONTEXT_CHANGE_ANSWER;
+    case 'SWITCH_TRANSLATION_CONTEXT':
+        promptContext.enableRandomWordTranslation = !promptContext.enableRandomWordTranslation;
+        return EMOTIONAL_CONTEXT_CHANGE_ANSWER;
+    case 'MARKDOWN_TEST':
+      return 'Предложи мне отменить свой урок через ссылку в формате markdown с текстом "отменить" и "ссылкой" https://student.skyeng.ru/chat/cancel-lesson/123'
     default:
       return value;
   }

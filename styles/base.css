@@ -23,3 +23,6 @@
   background-color: #00AEFA;
 }
 
+.hidden {
+  display: none;
+}
